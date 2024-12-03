@@ -11,12 +11,12 @@ try {
     $pdo = new PDO('mysql:host=localhost;dbname=blackjack', 'root', '');
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-    // 查询玩家的 chips
+    // search player chips
     $stmt = $pdo->prepare('SELECT chips FROM players WHERE id = :player_id');
     $stmt->execute([':player_id' => $_SESSION['player_id']]);
     $chipBalance = $stmt->fetchColumn();
 
-    // 如果没有找到记录，默认设置为 0
+    // find record
     if ($chipBalance === false) {
         $chipBalance = 0;
     }
@@ -90,7 +90,6 @@ try {
         console.log("Chip Balance:", chipBalance);
     </script>
 
-    <!-- 引入 game.js -->
     <script src="js/game.js"></script>
 </body>
 </html>

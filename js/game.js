@@ -1,4 +1,4 @@
-// <!--112550003 李昀祐 第四次作業 11/17 112550003 Yun-Yu, Lee The Fourth Homework 11/17 -->
+// <!--112550003 李昀祐 第五次作業 11/17 112550003 Yun-Yu, Lee The Fifth Homework 11/17 -->
 let dealerSum = 0;
 let yourSum = 0;
 
@@ -23,7 +23,6 @@ window.onload = function() {
     hideElement("game-controls");
     hideElement("history-container");
 
-    // 綁定賭注按鈕的事件
     document.querySelectorAll(".chip").forEach(button => {
         button.disabled = false;
         button.addEventListener("click", function () {
