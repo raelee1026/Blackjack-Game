@@ -1,20 +1,25 @@
-<!--112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06 -->
 <?php
-session_start(); // 啟用 PHP 的 Session 功能，用於存儲用戶狀態
+session_start();
+if (!isset($_SESSION['username'])) {
+    header('Location: auth.php'); // 未登入則跳轉到登入頁面
+    exit;
+}
 ?>
-
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>HW5_112550003_李昀祐</title>
-        <link rel="stylesheet" href="css/style.css">
-        <script src="js/script.js"></script>
-    </head>
-
-    <body>
-
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/game.js"></script>
+    <title>HW5_112550003_李昀祐</title>
+</head>
+<body>
+    <!-- <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></h1> -->
+    
+    <div id="game-board">
+        <a href="php/auth/logout.php">Logout</a>
+        <!-- 原本的遊戲 HTML -->
         <div id="center-message" class="center-message hidden"></div>
         <div id="center-message-alert" class="center-message-alert hidden"></div>
         
@@ -61,6 +66,7 @@ session_start(); // 啟用 PHP 的 Session 功能，用於存儲用戶狀態
         </div>
         
         <div id="history-container"></div>
-
-    </body>
+    </div>
+    
+</body>
 </html>
