@@ -1,25 +1,42 @@
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
-    header('Location: auth.php'); // 未登入則跳轉到登入頁面
+
+// 检查是否已登录
+if (!isset($_SESSION['player_id'])) {
+    header('Location: login.php');
     exit;
 }
+
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=blackjack', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // 查询玩家的 chips
+    $stmt = $pdo->prepare('SELECT chips FROM players WHERE id = :player_id');
+    $stmt->execute([':player_id' => $_SESSION['player_id']]);
+    $chipBalance = $stmt->fetchColumn();
+
+    // 如果没有找到记录，默认设置为 0
+    if ($chipBalance === false) {
+        $chipBalance = 0;
+    }
+} catch (PDOException $e) {
+    die('Database error: ' . $e->getMessage());
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <script src="js/game.js"></script>
     <title>HW5_112550003_李昀祐</title>
 </head>
 <body>
-    <!-- <h1>Welcome, <?php echo htmlspecialchars($_SESSION['username']); ?></h1> -->
-    
     <div id="game-board">
         <a href="php/auth/logout.php">Logout</a>
-        <!-- 原本的遊戲 HTML -->
+        <!-- original HTML -->
         <div id="center-message" class="center-message hidden"></div>
         <div id="center-message-alert" class="center-message-alert hidden"></div>
         
@@ -67,6 +84,13 @@ if (!isset($_SESSION['username'])) {
         
         <div id="history-container"></div>
     </div>
-    
+
+    <script>
+        let chipBalance = <?php echo json_encode($chipBalance); ?>;
+        console.log("Chip Balance:", chipBalance);
+    </script>
+
+    <!-- 引入 game.js -->
+    <script src="js/game.js"></script>
 </body>
 </html>

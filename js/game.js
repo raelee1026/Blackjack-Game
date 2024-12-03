@@ -11,8 +11,9 @@ let deck;
 let canHit = true; //allows the player (you) to draw while yourSum < 21
 
 // for chips and bet
-let chipBalance = 500;
+// let chipBalance = 500;
 let currentBet = 0;
+console.log("Initial Chip Balance:", chipBalance);
 
 window.onload = function() {
     preventReloadWithAlert();
@@ -463,6 +464,22 @@ function saveGameInfo() {
     // 儲存更新後的遊戲歷史到 localStorage 和 sessionStorage
     localStorage.setItem("gameHistory", JSON.stringify(gameHistory));
     sessionStorage.setItem("gameHistory", JSON.stringify(sessionGameHistory));
+
+    // to php backend
+    fetch('php/game/save_game_data.php', { 
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(gameInfo)
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
 
     console.log("新回合已儲存到 localStorage 和 sessionStorage:", gameInfo);
 }

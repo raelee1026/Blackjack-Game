@@ -1,146 +1,107 @@
+<!--112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06 -->
 <?php
 session_start();
+
+// 如果用戶已登入，跳轉到遊戲頁面
 if (isset($_SESSION['username'])) {
-    header('Location: game.php'); // 如果已登入，跳轉到遊戲頁面
+    header('Location: game.php');
     exit;
 }
+
+$message = ''; // 用於顯示錯誤或成功訊息
+
+// 登入邏輯
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    if (!empty($username) && !empty($password)) {
+        try {
+            $pdo = new PDO('mysql:host=localhost;dbname=blackjack', 'root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare('SELECT id, password FROM players WHERE username = :username');
+            $stmt->execute(['username' => $username]);
+            $player = $stmt->fetch();
+
+            if ($player && password_verify($password, $player['password'])) {
+                $_SESSION['username'] = $username;
+                $_SESSION['player_id'] = $player['id'];
+                $_SESSION['chipBalance'] = $player['chips'];
+                header('Location: game.php');
+                exit;
+            } else {
+                $message = 'Invalid username or password.';
+            }
+        } catch (PDOException $e) {
+            $message = 'Database error: ' . $e->getMessage();
+        }
+    } else {
+        $message = 'Please enter both username and password.';
+    }
+}
+
+// 註冊邏輯
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
+    $username = $_POST['username'] ?? '';
+    $password = $_POST['password'] ?? '';
+
+    if (!empty($username) && !empty($password)) {
+        try {
+            $pdo = new PDO('mysql:host=localhost;dbname=blackjack', 'root', '');
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+            $stmt = $pdo->prepare('SELECT id FROM players WHERE username = :username');
+            $stmt->execute(['username' => $username]);
+            $player = $stmt->fetch();
+
+            if ($player) {
+                $message = 'Username already exists.';
+            } else {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $stmt = $pdo->prepare('INSERT INTO players (username, password, chips) VALUES (:username, :password, 500)');
+                $stmt->execute([
+                    'username' => $username,
+                    'password' => $hashedPassword
+                ]);
+                $message = 'Registration successful. You can now log in.';
+            }
+        } catch (PDOException $e) {
+            $message = 'Database error: ' . $e->getMessage();
+        }
+    } else {
+        $message = 'Please enter both username and password.';
+    }
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <script src="js/auth.js"></script>
+    <link rel="stylesheet" href="css/auth.css">
     <title>Login/Register</title>
-    <style>
-        /* 彈窗樣式 */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            justify-content: center;
-            align-items: center;
-        }
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            width: 300px;
-            text-align: center;
-        }
-        .modal-content input {
-            width: 90%;
-            padding: 10px;
-            margin: 10px 0;
-        }
-        .modal-content button {
-            padding: 10px 20px;
-        }
-    </style>
 </head>
 <body>
-    <h1>Welcome to Blackjack</h1>
-    <button id="login-btn">Login</button>
-    <button id="register-btn">Register</button>
-
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <h2>Login</h2>
-            <input type="text" id="login-username" placeholder="Username" required>
-            <input type="password" id="login-password" placeholder="Password" required>
-            <button id="login-submit">Login</button>
-            <button onclick="closeModal('login-modal')">Cancel</button>
-        </div>
+    
+    <div class="form-container">
+        <h1>blackjack</h1>
+        <h2>Login</h2>
+        <form method="POST" action="">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" name="login">Login</button>
+        </form>
+        <h2>Register</h2>
+        <form method="POST" action="">
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <button type="submit" name="register">Register</button>
+        </form>
+        <?php if (!empty($message)): ?>
+            <p class="message"><?php echo htmlspecialchars($message); ?></p>
+        <?php endif; ?>
     </div>
-
-    <!-- Register Modal -->
-    <div id="register-modal" class="modal">
-        <div class="modal-content">
-            <h2>Register</h2>
-            <input type="text" id="register-username" placeholder="Username" required>
-            <input type="password" id="register-password" placeholder="Password" required>
-            <button id="register-submit">Register</button>
-            <button onclick="closeModal('register-modal')">Cancel</button>
-        </div>
-    </div>
-
-    <script src="js/auth.js"></script>
-    <script>
-        // 開啟彈窗
-        // document.getElementById('login-btn').addEventListener('click', () => openModal('login-modal'));
-        // document.getElementById('register-btn').addEventListener('click', () => openModal('register-modal'));
-
-        // function openModal(modalId) {
-        //     document.getElementById(modalId).style.display = 'flex';
-        // }
-
-        // function closeModal(modalId) {
-        //     document.getElementById(modalId).style.display = 'none';
-        // }
-
-        // document.addEventListener('DOMContentLoaded', () => {
-        // // 處理 Login 提交
-        //     document.getElementById('login-submit').addEventListener('click', async () => {
-        //         const username = document.getElementById('login-username').value;
-        //         const password = document.getElementById('login-password').value;
-
-        //         if (!username || !password) {
-        //             alert("Please enter both username and password.");
-        //             return;
-        //         }
-
-        //         try {
-        //             const response = await fetch('php/auth/login.php', {
-        //                 method: 'POST',
-        //                 headers: { 'Content-Type': 'application/json' },
-        //                 body: JSON.stringify({ username, password })
-        //             });
-        //             const result = await response.json();
-        //             alert(result.message);
-
-        //             if (result.success) {
-        //                 window.location.href = 'game.php'; // 跳轉到遊戲頁面
-        //             }
-        //         } catch (error) {
-        //             console.error("Login error:", error);
-        //         }
-        //     });
-
-        //     // 處理 Register 提交
-        //     document.getElementById('register-submit').addEventListener('click', async () => {
-        //         const username = document.getElementById('register-username').value;
-        //         const password = document.getElementById('register-password').value;
-
-        //         if (!username || !password) {
-        //             alert("Please enter both username and password.");
-        //             return;
-        //         }
-
-        //         try {
-        //             const response = await fetch('php/auth/register.php', {
-        //                 method: 'POST',
-        //                 headers: { 'Content-Type': 'application/json' },
-        //                 body: JSON.stringify({ username, password })
-        //             });
-        //             const result = await response.json();
-        //             alert(result.message);
-
-        //             if (result.success) {
-        //                 closeModal('register-modal');
-        //             }
-        //         } catch (error) {
-        //             console.error("Register error:", error);
-        //         }
-        //     });
-        // });
-
-    </script>
 </body>
 </html>
