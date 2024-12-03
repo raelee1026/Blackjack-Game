@@ -1,5 +1,16 @@
+document.getElementById('login-btn').addEventListener('click', () => openModal('login-modal'));
+document.getElementById('register-btn').addEventListener('click', () => openModal('register-modal'));
+
+function openModal(modalId) {
+    document.getElementById(modalId).style.display = 'flex';
+}
+
+function closeModal(modalId) {
+    document.getElementById(modalId).style.display = 'none';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 處理 Login 提交
+// 處理 Login 提交
     document.getElementById('login-submit').addEventListener('click', async () => {
         const username = document.getElementById('login-username').value;
         const password = document.getElementById('login-password').value;
