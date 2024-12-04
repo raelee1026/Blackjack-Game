@@ -6,11 +6,11 @@ body, html {
     align-items: center;
     justify-content: center;
     /* background-color: #009FCC; */
-    background-color: #0B3D0B;
+    /* background-color: #0B3D0B; */
+    background-color: #1B2A34;
     font-family: Arial, Helvetica, sans-serif;
     text-align: center;
 }
-
 
 #game-controls {
     width: 100vw;
@@ -279,3 +279,77 @@ button:disabled:hover {
     transform: translateY(1px); 
 }
 
+/* 顯示 Welcome 和 Logout 在頂部 */
+#welcome-message, #logout-link {
+    color: #FFD700;  
+    font-size: 2em;
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 10px;
+    transition: all 0.3s ease;
+}
+
+/* 顯示 Welcome 在畫面中間 */
+#welcome-message {
+    position: absolute;
+    top: 10px;  /* 調整距離頂部 */
+    left: 50%;
+    transform: translateX(-50%); /* 使文字居中 */
+}
+
+/* 登出按钮右上角 */
+#logout-link {
+    position: absolute;
+    top: 10px;  /* 距離頂部 */
+    right: 20px;  /* 靠近右邊 */
+    font-size: 1em;
+    text-decoration: none;
+    background-color: transparent;
+    border: 1px solid #FFD700;
+    border-radius: 5px;
+    color: #FFD700;
+    padding: 5px 10px;
+}
+
+#logout-link:hover {
+    background-color: #FFD700;
+    color: #0B3D0B;
+    transform: scale(1.05);
+}
+
+/* 增加區分性，使頁面更加乾淨 */
+#game-board {
+    width: 100%; 
+    height: 100%; 
+    margin-top: 250px; /* 避免 Welcome 和 Logout 挡住 */
+}
+
+/* Dealer 和 Player 的標題設計 */
+#game-controls h2 {
+    font-size: 1.8em; /* 較大的標題字體 */
+    font-weight: bold; /* 粗體字以增加強調 */
+    color: #FFD700; /* 金色字體，與深色背景形成對比 */
+    text-shadow: 1px 1px 2px #000; /* 增加輕微的陰影效果 */
+    margin: 10px 0; /* 添加適當的上下間距 */
+}
+
+/* 點數的數值設計 */
+#game-controls h2 span {
+    font-size: 2em; /* 比標題稍大的字體 */
+    font-weight: bold; /* 加強數值的強調 */
+    color: #FFFFFF; /* 使用白色數值字體，與金色形成區別 */
+    text-shadow: 2px 2px 3px #000; /* 更明顯的陰影效果 */
+}
+
+/* cheat-button */
+#cheat-button {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* #cheat-button:hover {
+    transform: scale(1.1); 
+} */

@@ -1,5 +1,5 @@
 <?php
-// 112550003 李昀祐 第五次作業 11/17 112550003 Yun-Yu, Lee The Fifth Homework 11/17 
+// 112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06
 session_start();
 
 // 检查是否已登录
@@ -71,8 +71,8 @@ if (isset($_SESSION['player_id'])) {
 </head>
 <body>
     <div id="game-board">
-        <p>Welcome, <span id="username"><?php echo htmlspecialchars($username); ?></span>!</p>
-        <a href="php/auth/logout.php">Logout</a>
+        <p id="welcome-message">Welcome, <span id="username"><?php echo htmlspecialchars($username); ?></span>!</p>
+        <a href="php/auth/logout.php" id="logout-link">Logout</a>
         <!-- original HTML -->
         <div id="center-message" class="center-message hidden"></div>
         <div id="center-message-alert" class="center-message-alert hidden"></div>
@@ -83,7 +83,9 @@ if (isset($_SESSION['player_id'])) {
     
             <div class="current-bet-container">
                 <p class="current-bet">Current Bet: <span id="current-bet">0</span></p>
-                <img src="images/pile-chip.png" alt="pile">
+                <button id="cheat-button">
+                    <img src="images/pile-chip.png" alt="pile">
+                </button>
             </div>
 
             <div class="chip-container">

@@ -1,5 +1,5 @@
-<!--112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06 -->
 <?php
+// 112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06
 session_start();
 
 // 如果用戶已登入，跳轉到遊戲頁面
@@ -81,7 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/auth2.css">
-    <title>Login/Register</title>
+    <title>HW5_112550003_李昀祐</title>
 </head>
 <body>
     

@@ -1,4 +1,5 @@
 <?php
+// 112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06
 session_start();
 
 // 检查是否已登录
@@ -29,7 +30,7 @@ try {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Results</title>
+    <title>HW5_112550003_李昀祐</title>
     <link rel="stylesheet" href="../../css/endgame.css"> <!-- 你可以根据需要加入 CSS 文件 -->
 </head>
 <body>

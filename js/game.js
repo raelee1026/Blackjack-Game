@@ -1,4 +1,4 @@
-// 112550003 李昀祐 第五次作業 11/17 112550003 Yun-Yu, Lee The Fifth Homework 11/17 
+// 112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06
 let dealerSum = 0;
 let yourSum = 0;
 
@@ -9,6 +9,7 @@ let hidden;
 let deck;
 
 let canHit = true; //allows the player (you) to draw while yourSum < 21
+let cheat = false; //for cheat button
 
 // for chips and bet
 // let chipBalance = 500;
@@ -53,6 +54,12 @@ window.onload = function() {
         }
     });
 
+    document.getElementById('cheat-button').addEventListener('click', function() {
+        cheat = true;  // 點擊後啟用作弊模式
+        // showCenterMessage('Cheat activated! Dealer wins this round!');
+        // console.log("cheating now");
+    });
+
     // 綁定「Hit」和「Stand」按鈕
     document.getElementById("hit").addEventListener("click", hit);
     document.getElementById("stand").addEventListener("click", stand);
@@ -93,7 +100,48 @@ function shuffleDeck() {
         deck[i] = deck[j];
         deck[j] = temp;
     }
-    console.log(deck);
+    if (cheat) {
+        // 作弊模式：隨機選擇一種作弊設定
+        let cheatScenario = Math.floor(Math.random() * 5); // 隨機選擇
+
+        if (cheatScenario === 0) {
+            // 作弊情況 1: dealer 拿兩張 10 點，玩家總和 16~18，確保第五張是J, Q, K
+            deck[51] = "10-S";  // dealer 第一張牌
+            deck[50] = "10-H";  // dealer 第二張牌
+            deck[49] = "7-S";   // 玩家第一張牌
+            deck[48] = "8-D";   // 玩家第二張牌
+            deck[47] = "J-H";   // 玩家第五張牌
+        } else if (cheatScenario === 1) {
+            // 作弊情況 2: dealer 拿到 A 和 10，玩家總和 16~18，確保第五張是J, Q, K
+            deck[51] = "A-H";   // dealer 第一張牌
+            deck[50] = "10-D";  // dealer 第二張牌
+            deck[49] = "8-S";   // 玩家第一張牌
+            deck[48] = "8-D";   // 玩家第二張牌
+            deck[47] = "Q-H";   // 玩家第五張牌
+        } else if (cheatScenario === 2) {
+            // 作弊情況 3: dealer 拿到 J 和 Q，玩家總和 16~18，確保第五張是J, Q, K
+            deck[51] = "J-S";   // dealer 第一張牌
+            deck[50] = "Q-H";   // dealer 第二張牌
+            deck[49] = "8-S";   // 玩家第一張牌
+            deck[48] = "9-D";   // 玩家第二張牌
+            deck[47] = "K-H";   // 玩家第五張牌
+        } else if (cheatScenario === 3) {
+            // 作弊情況 2: dealer 拿到 A 和 10，玩家總和 16~18，確保第五張是J, Q, K
+            deck[51] = "10-H";   // dealer 第一張牌
+            deck[50] = "J-D";  // dealer 第二張牌
+            deck[49] = "7-S";   // 玩家第一張牌
+            deck[48] = "8-D";   // 玩家第二張牌
+            deck[47] = "9-H";   // 玩家第五張牌
+        } else if (cheatScenario === 4) {
+            // 作弊情況 3: dealer 拿到 J 和 Q，玩家總和 16~18，確保第五張是J, Q, K
+            deck[51] = "J-S";   // dealer 第一張牌
+            deck[50] = "8-H";   // dealer 第二張牌
+            deck[49] = "8-S";   // 玩家第一張牌
+            deck[48] = "9-D";   // 玩家第二張牌
+            deck[47] = "K-H";   // 玩家第五張牌
+        }
+    }
+    // console.log(deck);
 }
 
 function startGame() {
@@ -237,6 +285,8 @@ function stand() {
 }
 
 function endGame(result) {
+    cheat = false;
+    // console.log("Cheat mode deactivated");
     dealerSum = reduceAce(dealerSum, dealerAceCount);
     yourSum = reduceAce(yourSum, yourAceCount);
 
