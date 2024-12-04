@@ -1,5 +1,5 @@
-<!--112550003 李昀祐 第五次作業 12/06 112550003 Yun-Yu, Lee The Fith Homework 12/06 -->
 <?php
+// 112550003 李昀祐 第五次作業 11/17 112550003 Yun-Yu, Lee The Fifth Homework 11/17 
 session_start();
 
 // get json files
@@ -9,7 +9,7 @@ $data = json_decode($input, true);
 if (isset($_SESSION['player_id']) && $data) {
     $player_id = $_SESSION['player_id'];
     $game_data = json_encode($data);
-    //count chips
+    // count chips
     $chips = $data['chips'];
     $currentBet = $data['currentBet'];
     $result = $data['result'];
@@ -44,6 +44,20 @@ if (isset($_SESSION['player_id']) && $data) {
 
         // commit
         $pdo->commit();
+
+        // Prepare data for cookie
+        $cookieData = [
+            'player_id' => $player_id,
+            'chips' => $chips,
+            'game_data' => $data,
+            'last_result' => $result
+        ];
+
+        // Create a unique cookie name for the player
+        $cookieName = 'blackjack_data_' . $player_id;
+
+        // Encode and store in the cookie
+        setcookie($cookieName, json_encode($cookieData), time() + (86400 * 7), '/'); // Expires in 7 days
 
         echo json_encode(['status' => 'success']);
     } catch (PDOException $e) {

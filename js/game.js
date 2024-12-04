@@ -1,4 +1,4 @@
-// <!--112550003 李昀祐 第五次作業 11/17 112550003 Yun-Yu, Lee The Fifth Homework 11/17 -->
+// 112550003 李昀祐 第五次作業 11/17 112550003 Yun-Yu, Lee The Fifth Homework 11/17 
 let dealerSum = 0;
 let yourSum = 0;
 
@@ -16,7 +16,7 @@ let currentBet = 0;
 console.log("Initial Chip Balance:", chipBalance);
 
 window.onload = function() {
-    preventReloadWithAlert();
+    // preventReloadWithAlert();
     clearGameHistory();
     initializeGame();
     showElement("chip-controls");
@@ -341,12 +341,15 @@ function endGame(result) {
 
         setTimeout(() => {
             if (chipBalance <= 0) {
+                
                 displayGameHistory();
                 // alert("Game over! You ran out of chips.");
                 showCenterMessage("Game over! You ran out of chips.");
                 hideElement("chip-controls");
                 hideElement("game-controls");
-                showElement("history-container");
+                hideElement("history-container");
+                window.location.href = 'php/auth/endgame.php';
+                // showElement("history-container");
                 // alert("Do you want to restart the game?");
                 // window.location.reload();
             } 
