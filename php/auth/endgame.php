@@ -30,7 +30,7 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Results</title>
-    <link rel="stylesheet" href="../../css/auth.css"> <!-- 你可以根据需要加入 CSS 文件 -->
+    <link rel="stylesheet" href="../../css/endgame.css"> <!-- 你可以根据需要加入 CSS 文件 -->
 </head>
 <body>
     <h1>Game Results</h1>
@@ -77,7 +77,7 @@ try {
                         <td><?php echo $gameData['currentBet']; ?></td> 
                         <td><?php echo $gameData['result']; ?></td> 
                         <td><?php echo $formattedTimestamp; ?></td>
-                        <td><?php echo $result['chips']; ?></td> 
+                        <td><?php echo intval($result['chips']); ?></td> 
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -85,6 +85,6 @@ try {
     <?php endif; ?>
 
     <br><br>
-    <a href="logout.php">Logout</a>
+    <button class="logout-btn" onclick="window.location.href='logout.php';">Logout</button>
 </body>
 </html>

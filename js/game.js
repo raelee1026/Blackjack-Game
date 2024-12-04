@@ -145,16 +145,6 @@ function startGame() {
         document.getElementById("your-cards").append(cardImg);
     }
 
-    // if player get 21 when start
-    // if (reduceAce(yourSum, yourAceCount) === 21) {
-    //     document.getElementById("results").innerText = "Blackjack! You Win!";
-    //     document.getElementById("your-sum").innerText = yourSum;
-    //     // can't use hit and stand
-    //     document.getElementById("hit").disabled = true;
-    //     document.getElementById("stand").disabled = true;
-    //     return;
-    // }
-
     if (reduceAce(yourSum, yourAceCount) === 21) {
         document.getElementById("your-sum").innerText = yourSum;
         document.getElementById("hit").disabled = true;
@@ -167,9 +157,6 @@ function startGame() {
         
     }
 
-    // // console.log(yourSum);
-    // document.getElementById("hit").addEventListener("click", hit);
-    // document.getElementById("stand").addEventListener("click", stand);
 
 }
 
@@ -248,54 +235,6 @@ function stand() {
         }
     }, 1000); // after show hidden card 1 second start draw section
 }
-
-// endgame and show result
-// function endGame() {
-    
-//     // count both final score
-//     dealerSum = reduceAce(dealerSum, dealerAceCount);
-//     yourSum = reduceAce(yourSum, yourAceCount);
-
-//     // show final result
-//     let message = "";
-//     if (yourSum > 21) {
-//         message = "You Lose!";
-//     } else if (dealerSum > 21) {
-//         message = "You Win!";
-//     } else if (yourSum === dealerSum) {
-//         message = "Tie!";
-//     } else if (yourSum > dealerSum) {
-//         message = "You Win!";
-//     } else {
-//         message = "You Lose!";
-//     }
-
-//     // show result in html
-//     document.getElementById("dealer-sum").innerText = dealerSum;
-//     document.getElementById("your-sum").innerText = yourSum;
-//     document.getElementById("results").innerText = message;
-    
-//     updateChips(message);
-//     updateChipsDisplay();
-//     currentBet = 0;
-
-//     // 設置延遲來顯示「開始遊戲」按鈕和賭注按鈕
-//     setTimeout(() => {
-//         // 顯示「開始遊戲」按鈕並啟用賭注按鈕
-//         document.getElementById("start-game").style.display = "inline-block";
-//         document.querySelectorAll(".chip").forEach(button => button.disabled = false);
-
-//         // 再延遲顯示遊戲結束提示
-//         setTimeout(() => {
-//             if (chipBalance <= 0) {
-//                 alert("Game over! You ran out of chips.");
-//             } else {
-//                 alert("Place a new bet to start the next game.");
-//             }
-//         }, 500); // 再延遲 0.5 秒顯示提示
-
-//     }, 1000); // 初始延遲 1 秒顯示「開始遊戲」按鈕和賭注按鈕
-// }
 
 function endGame(result) {
     dealerSum = reduceAce(dealerSum, dealerAceCount);

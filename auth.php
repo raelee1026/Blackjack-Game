@@ -80,28 +80,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['register'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/auth2.css">
     <title>Login/Register</title>
 </head>
 <body>
     
     <div class="form-container">
-        <h1>blackjack</h1>
-        <h2>Login</h2>
-        <form method="POST" action="">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" name="login">Login</button>
-        </form>
-        <h2>Register</h2>
-        <form method="POST" action="">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" name="register">Register</button>
-        </form>
-        <?php if (!empty($message)): ?>
-            <p class="message"><?php echo htmlspecialchars($message); ?></p>
-        <?php endif; ?>
+        <!-- <h1>blackjack</h1> -->
+        <div class="form-section">
+            <h2>Login</h2>
+            <form method="POST" action="">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit" name="login">Login</button>
+            </form>
+        </div>
+        <div class="form-section">
+            <h2>Register</h2>
+            <form method="POST" action="">
+                <input type="text" name="username" placeholder="Username" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <button type="submit" name="register">Register</button>
+            </form>
+        </div>
+
     </div>
+    <?php if (!empty($message)): ?>
+        <p class="message"><?php echo htmlspecialchars($message); ?></p>
+    <?php endif; ?>
 </body>
 </html>

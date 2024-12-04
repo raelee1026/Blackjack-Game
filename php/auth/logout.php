@@ -8,6 +8,6 @@ session_unset();
 session_destroy();
 
 // 重定向到 auth.php
-header('Location: ../../auth.php');
+header('Location: ../../index.php');
 exit;
 ?>

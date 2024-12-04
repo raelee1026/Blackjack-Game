@@ -1,0 +1,66 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body and HTML styling */
+body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;  /* Align elements vertically */
+    align-items: center;
+    justify-content: center;
+    background-color: #1B2A34;  /* Deep blue background for a casino vibe */
+    font-family: 'Arial', sans-serif;
+    color: #fff;
+}
+
+/* Title styling */
+h1 {
+    font-size: 72px;
+    color: #FFDD57;  /* Golden color to match a casino theme */
+    margin-bottom: 30px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Start button styling */
+button.start-btn {
+    padding: 15px 30px;
+    background-color: #FFDD57;  /* Golden color for button */
+    color: #1B2A34;  /* Dark background for text */
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button.start-btn:hover {
+    background-color: #FFD700;  /* Darker gold on hover */
+}
+
+/* Styling for the page content container */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Media query for responsive design */
+@media screen and (max-width: 768px) {
+    h1 {
+        font-size: 48px;
+    }
+
+    button.start-btn {
+        font-size: 18px;
+        padding: 10px 20px;
+    }
+}
