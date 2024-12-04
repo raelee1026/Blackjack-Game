@@ -1,38 +1,90 @@
 <?php
 session_start();
 
-// 检查玩家是否已登录
+// 检查是否已登录
 if (!isset($_SESSION['player_id'])) {
-    // 如果未登录，重定向到登录页面
-    header('Location: auth.php');
+    header('Location: login.php');
     exit;
 }
 
-// 处理登出请求
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['logout'])) {
-    // 清除会话数据
-    session_unset();
-    session_destroy();
+$player_id = $_SESSION['player_id']; // 获取当前玩家的 ID
 
-    // 重定向到登录页面
-    header('Location: ../../auth.php');
-    exit;
+// 连接数据库
+try {
+    $pdo = new PDO('mysql:host=localhost;dbname=blackjack', 'root', '');
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+    // 获取玩家的所有游戏记录
+    $stmt = $pdo->prepare('SELECT * FROM game_results WHERE player_id = :player_id');
+    $stmt->execute([':player_id' => $player_id]);
+    $gameResults = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} catch (PDOException $e) {
+    die('Database error: ' . $e->getMessage());
 }
 ?>
+
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>游戏结束</title>
-    <link rel="stylesheet" href="../../css/auth.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Results</title>
+    <link rel="stylesheet" href="../../css/auth.css"> <!-- 你可以根据需要加入 CSS 文件 -->
 </head>
 <body>
-    <div class="container">
-        <h1>游戏结束</h1>
-        <p>您的筹码余额已为零，游戏已结束。</p>
-        <form method="post">
-            <button type="submit" name="logout">登出</button>
-        </form>
-    </div>
+    <h1>Game Results</h1>
+
+    <?php if (empty($gameResults)): ?>
+        <p>No game results found.</p>
+    <?php else: ?>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Round</th>
+                    <th>Player Card Count</th>
+                    <th>Player Points</th>
+                    <th>Player Cards</th>
+                    <th>Dealer Card Count</th>
+                    <th>Dealer Points</th>
+                    <th>Dealer Cards</th>
+                    <th>Remaining Chips</th>
+                    <th>Current Bet</th>
+                    <th>Result</th>
+                    <th>Timestamp</th>
+                    <th>Chips after round</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($gameResults as $index => $result): ?>
+                    <?php
+                        // 解析 JSON 数据
+                        $gameData = json_decode($result['game_data'], true);
+                        $player = $gameData['player'];
+                        $dealer = $gameData['dealer'];
+                        $timestamp = $gameData['timestamp']; 
+                        $formattedTimestamp = date('Y-m-d H:i:s', strtotime($timestamp));
+                    ?>
+                    <tr>
+                        <td><?php echo $index + 1; ?></td> 
+                        <td><?php echo $player['cardCount']; ?></td> 
+                        <td><?php echo $player['sum']; ?></td> 
+                        <td><?php echo implode(", ", $player['cardValues']); ?></td>
+                        <td><?php echo $dealer['cardCount']; ?></td> 
+                        <td><?php echo $dealer['sum']; ?></td> 
+                        <td><?php echo implode(", ", $dealer['cardValues']); ?></td> 
+                        <td><?php echo $gameData['chips']; ?></td> 
+                        <td><?php echo $gameData['currentBet']; ?></td> 
+                        <td><?php echo $gameData['result']; ?></td> 
+                        <td><?php echo $formattedTimestamp; ?></td>
+                        <td><?php echo $result['chips']; ?></td> 
+                    </tr>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
+    <?php endif; ?>
+
+    <br><br>
+    <a href="logout.php">Logout</a>
 </body>
 </html>

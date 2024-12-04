@@ -341,14 +341,13 @@ function endGame(result) {
 
         setTimeout(() => {
             if (chipBalance <= 0) {
-                
+                window.location.href = 'php/auth/endgame.php';
                 displayGameHistory();
                 // alert("Game over! You ran out of chips.");
                 showCenterMessage("Game over! You ran out of chips.");
                 hideElement("chip-controls");
                 hideElement("game-controls");
                 hideElement("history-container");
-                window.location.href = 'php/auth/endgame.php';
                 // showElement("history-container");
                 // alert("Do you want to restart the game?");
                 // window.location.reload();
